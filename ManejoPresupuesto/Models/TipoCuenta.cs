@@ -1,4 +1,5 @@
 ﻿using ManejoPresupuesto.Validaciones;
+using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
 namespace ManejoPresupuesto.Models
@@ -9,6 +10,9 @@ namespace ManejoPresupuesto.Models
 
         [Required(ErrorMessage ="El campo {0} es requerido")]
         [PrimeraLetraMayuscula]
+
+        //Enlazo esta validacion de JS al controller y a la accion
+        [Remote(action: "VerificarExisteTipoCuenta", controller: "TiposCuentas")]
         public string Nombre { get; set; }
 
         public int UsuarioId { get; set; }
