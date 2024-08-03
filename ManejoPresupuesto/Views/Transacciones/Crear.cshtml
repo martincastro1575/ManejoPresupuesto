@@ -58,7 +58,7 @@
         $(function(){
             $("#TipoOperacionId").change(async function(){
                 const valorSeleccionado = $(this).val();
-
+                // console.log('Valor: ' + valorSeleccionado);
                 const respuesta = await fetch(urlObtenerCategorias, {
                     method: 'POST',
                     body: valorSeleccionado,
