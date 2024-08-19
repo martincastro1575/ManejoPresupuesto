@@ -40,7 +40,7 @@ namespace ManejoPresupuesto.Servicios
             using var connection = new SqlConnection(connectionString);
 
             return await connection.QueryAsync<Cuenta>(
-                @"SELECT c.id, c.Nombre, c.Balance,tc.Nombre as TipoCuenta 
+                @"SELECT c.id, c.Nombre, c.Balance,tc.Nombre as TipoCuenta, c.TipoCuentaId
                 FROM Cuentas c INNER JOIN TiposCuentas tc ON tc.id = c.TipoCuentaId 
                 WHERE tc.UsuarioId = @UsuarioId ORDER BY tc.Orden;", new { UsuarioId });
         }

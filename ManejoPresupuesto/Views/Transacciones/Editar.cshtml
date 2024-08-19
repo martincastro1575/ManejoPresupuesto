@@ -1,14 +1,18 @@
-﻿@model TransaccionCreacionViewModel
-  
+﻿@model TransaccionActualizarViewModel
+
 @{
-    ViewData["Title"] = "Crear Transaccion";
+    ViewData["Title"] = "Editar Transaccion";
 }
 
-<h1>Crear Transaccion</h1>
+<h1>Editar Transaccion</h1>
 <h5>Una transaccion te permite indicar tus ingresos</h5>
 
-<form asp-controller="Transacciones" asp-action="Crear">
+<form asp-controller="Transacciones" asp-action="Editar">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="MontoAnterior" />
+    <input type="hidden" asp-for="CuentaAnteriorId" />
+
     <div class="mb-3">
         <label asp-for="FechaTransaccion" class="form-label"></label>
         <input asp-for="FechaTransaccion" class="form-control" />
@@ -29,7 +33,7 @@
 
     <div class="mb-3">
         <label asp-for="CategoriaId" class="form-label"></label>
-        <select asp-for="CategoriaId" asp-items="Model.Categorias" class=" form-select"></select>
+        <select asp-for="CategoriaId" class="form-select" asp-items="Model.Categorias"></select>
         <span asp-validation-for="CategoriaId" class="text-danger"></span>
     </div>
 
@@ -45,7 +49,8 @@
         <span asp-validation-for="Nota" class="text-danger"></span>
     </div>
 
-    <button class="btn btn-primary">Enviar</button>
+    <button class="btn btn-primary">Actualizar</button>
+    <button class="btn btn-danger" asp-controller="Transacciones" asp-action="Borrar">Borrar</button>
     <a class="btn btn-secondary" asp-controller="Transacciones" asp-action="Index">Cancelar</a>
 </form>
 
@@ -62,4 +67,3 @@
 
     </script>
 }
-
