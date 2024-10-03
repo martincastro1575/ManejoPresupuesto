@@ -13,6 +13,7 @@ namespace ManejoPresupuesto.Servicios
         Task Crear(Transaccion transaccion);
         Task<IEnumerable<Transaccion>> ObtenerPorCuentaId(ObtenerTransaccionesPorCuenta modelo);
         Task<Transaccion> ObtenerPorId(int id, int usuarioId);
+        Task<IEnumerable<Transaccion>> ObtenerPorUsuarioId(ParametroObtenerTransaccionesPorUsuario modelo);
     }
     public class RepositorioTransacciones: IRepositorioTransacciones
     {
@@ -69,6 +70,18 @@ namespace ManejoPresupuesto.Servicios
 
             return await connection.QueryAsync<Transaccion>(
                 "selTransaccionPorCuentaId", modelo, commandType:System.Data.CommandType.StoredProcedure
+                );
+        }
+
+
+
+        public async Task<IEnumerable<Transaccion>> ObtenerPorUsuarioId(
+            ParametroObtenerTransaccionesPorUsuario modelo)
+        {
+            using var connection = new SqlConnection(connectionString);
+
+            return await connection.QueryAsync<Transaccion>(
+                "selTransaccionPorUsuarioId", modelo, commandType: System.Data.CommandType.StoredProcedure
                 );
         }
 
