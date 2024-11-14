@@ -13,6 +13,7 @@ namespace ManejoPresupuesto.Servicios
         Task Crear(Transaccion transaccion);
         Task<IEnumerable<Transaccion>> ObtenerPorCuentaId(ObtenerTransaccionesPorCuenta modelo);
         Task<Transaccion> ObtenerPorId(int id, int usuarioId);
+        Task<IEnumerable<ResultadoObtenerPorMes>> ObtenerPorMes(int usuarioId, int anio);
         Task<IEnumerable<ResultadoObtenerPorSemana>> ObtenerPorSemana(ParametroObtenerTransaccionesPorUsuario modelo);
         Task<IEnumerable<Transaccion>> ObtenerPorUsuarioId(ParametroObtenerTransaccionesPorUsuario modelo);
     }
@@ -101,6 +102,14 @@ namespace ManejoPresupuesto.Servicios
 
             return await connection.QueryAsync<ResultadoObtenerPorSemana>("ReporteSemanal", modelo, commandType: System.Data.CommandType.StoredProcedure);
         }
+
+        public async Task<IEnumerable<ResultadoObtenerPorMes>> ObtenerPorMes(int usuarioId, int anio)
+        {
+            using var connection = new SqlConnection(connectionString);
+            return await connection.QueryAsync<ResultadoObtenerPorMes>("ReporteMensual", new { usuarioId, anio }, commandType: System.Data.CommandType.StoredProcedure);
+        }
+
+
 
         public async Task Borrar(int id)
         {
