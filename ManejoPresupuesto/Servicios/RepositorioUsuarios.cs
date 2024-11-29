@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using ManejoPresupuesto.Models;
 using Microsoft.Data.SqlClient;
+using System.Data.Common;
 
 
 namespace ManejoPresupuesto.Servicios
@@ -17,6 +18,7 @@ namespace ManejoPresupuesto.Servicios
         public RepositorioUsuarios(IConfiguration configuration)
         {
             connectionString = configuration.GetConnectionString("DefaultConnection");
+            
         }
 
 
@@ -24,19 +26,22 @@ namespace ManejoPresupuesto.Servicios
         public async Task<int> CrearUsuario(Usuario usuario)
         {
             using var connection = new SqlConnection(connectionString);
-            //var id = await connection.QuerySingleAsync<int>("Usuario_Insertar", 
-            //    new {
 
-            //        usuario.Email,
-            //        usuario.EmailNormalizado,
-            //        usuario.PasswordHash
+            var usuarioId = await connection.QuerySingleAsync<int>("Usuario_Insertar",
+                new
+                {
 
-            //    }, 
-            //    commandType: System.Data.CommandType.StoredProcedure);
+                    usuario.Email,
+                    usuario.EmailNormalizado,
+                    usuario.PasswordHash
 
-            var id = await connection.QuerySingleAsync<int>(@"INSERT INTO Usuarios (Email,EmailNormalizado,PasswordHash) VALUES (@Email,@EmailNormalizado,@PasswordHash)", usuario);
+                },
+                commandType: System.Data.CommandType.StoredProcedure);
 
-            return id;
+            await connection.ExecuteAsync("CrearDatosUsuarioNuevo", new { usuarioId },
+                                commandType: System.Data.CommandType.StoredProcedure);
+            return usuarioId;
+            
         }
 
         public async Task<Usuario> BuscarUsuarioPorEmail(string emailNormalizado)
